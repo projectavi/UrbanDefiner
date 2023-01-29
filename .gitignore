@@ -152,4 +152,4 @@ cython_debug/
 #.idea/
 data/Urban/data.npy
 *.csv
-data/Urban/words.txt
+data/Urban/words.npy

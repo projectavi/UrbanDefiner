@@ -39,7 +39,7 @@ def construct_data(df):
     return df
 
 def main():
-    if not os.path.exists("./data/Urban/words.npy"):
+    if not os.path.exists("./data/Urban/words_train.txt") and not os.path.exists("./data/Urban/words_validate.txt"):
         if (not(os.path.exists("./data/Urban/data.npy"))):
             file_names = get_file_names()
             dataframes = get_dataframes(file_names)
@@ -51,24 +51,26 @@ def main():
         main_df = merge(list(dataframes))
         print(main_df.head())
 
-        data_array = [[],[]]
+        with open("data/Urban/words_train.txt", "w+", encoding="utf-8") as train:
+            with open("data/Urban/words_validate.txt", "w+", encoding="utf-8") as validate:
+                for index, row in main_df.iterrows():
+                    # write the word and definition to a file each on a new line
+                    # ", ".join()
+                    temp = "The definition of " + str(row[3]) + " is: " + ", ".join(str(row[4]).splitlines()) + ". Example usages include: " + ", ".join(str(row[5]).splitlines())
+                    if (index % 3 != 0):
+                            # remove all \ and whiever character is after it from string
+                            train.write(temp + "\n")
+                    else:
+                            # remove all \ and whiever character is after it from string
+                            validate.write(temp + "\n")
 
-        for index, row in main_df.iterrows():
-            # write the word and definition to a file each on a new line
-            # ", ".join()
-            data_array[0].append(str(row[3]))
-            temp = "Definition: " + str(row[4]) + ", Example: " + str(row[5])
-            # remove all \ and whiever character is after it from string
-            temp = ", ".join(temp.splitlines())
-            data_array[1].append(temp)
-        
-        data_array = np.array(data_array, dtype=object)
-        np.save("./data/Urban/words.npy", data_array)
-
-    else:
-        data_array = np.load("./data/Urban/words.npy", allow_pickle=True)
     
-    print(data_array[0])
+    # text_to_tensor("./data/Urban/words.txt")
+
+
+    # print(tensors[0])
+
+
 
 
 if __name__ == "__main__":
