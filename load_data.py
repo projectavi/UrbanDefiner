@@ -51,18 +51,16 @@ def main():
         main_df = merge(list(dataframes))
         print(main_df.head())
 
-        data_array = []
+        data_array = [[],[]]
 
         for index, row in main_df.iterrows():
             # write the word and definition to a file each on a new line
             # ", ".join()
-            temp_arr = []
-            temp_arr.append(str(row[3]))
+            data_array[0].append(str(row[3]))
             temp = "Definition: " + str(row[4]) + ", Example: " + str(row[5])
             # remove all \ and whiever character is after it from string
             temp = ", ".join(temp.splitlines())
-            temp_arr.append(temp)
-            data_array.append(temp_arr)
+            data_array[1].append(temp)
         
         data_array = np.array(data_array, dtype=object)
         np.save("./data/Urban/words.npy", data_array)
